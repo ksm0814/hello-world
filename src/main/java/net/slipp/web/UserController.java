@@ -34,15 +34,20 @@ public class UserController {
 	
 	@GetMapping("/profile/{userId}") 
 	public String profile(@PathVariable String userId, Model model) {
-		for (User user : users) {
-			log.info("users : {}, send userId : {}" ,user.toString(), userId);
-			if(user.getUserId().equals(userId)) {
-				log.info("sameId : {}, send sameuserId : {}" ,user.getUserId(), userId);
+		for (User user : users)
+			if(user.getUserId().equals(userId))
 				model.addAttribute("profileUser", user);
-			}
-		}
 		return "profile";
 	}
+
+//	@GetMapping("/profile/{name}") 
+//	public String profileFind(@PathVariable String name, Model model) {
+//		log.info("name : {}", name);
+//		for (User user : users)
+//			if(user.getName().equals(name))
+//				model.addAttribute("profileUser", user);
+//		return "profile";
+//	}
 	
 	
 }
