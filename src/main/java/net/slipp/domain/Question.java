@@ -1,4 +1,4 @@
-package net.slipp.web;
+package net.slipp.domain;
 
 public class Question {
 	String writer;
