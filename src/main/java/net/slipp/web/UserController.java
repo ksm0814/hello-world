@@ -28,34 +28,6 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@GetMapping("/loginForm")
-	public String loginForm() {
-		return "/user/login";
-	}
-	
-	@PostMapping("/login")
-	public String login(String userId, String password, HttpSession session) {
-		User user = userRepository.findByUserId(userId);
-		if(user == null) {
-			log.info("Login Success");
-			return "redirect:/users/loginForm";
-		}
-		if(!password.equals(user.getPassword())) {
-			log.info("Login Success");
-			return "redirect:/users/loginForm";
-		}
-		log.info("Login Success");
-		session.setAttribute("sessionedUser", user);
-		
-		return "redirect:/";
-	}
-	
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.removeAttribute("sessionedUser");
-		return "redirect:/";
-	}
-	
 	@GetMapping("/form")
 	public String form() {
 		return "/user/form";
@@ -74,14 +46,41 @@ public class UserController {
 		return "/user/list";
 	}
 	
-	@GetMapping("/{id}/form")
-	public String updateForm(@PathVariable Long id, Model model, HttpSession session){
-		Object tempUser = session.getAttribute("sessionedUser");
-		if(tempUser == null) {
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		return "/user/login";
+	}
+	
+	@PostMapping("/login")
+	public String login(String userId, String password, HttpSession session) {
+		User user = userRepository.findByUserId(userId);
+		if(user == null) {
+			log.info("Login Fail");
 			return "redirect:/users/loginForm";
 		}
-		User sessionedUser = (User)tempUser;
-		if(!id.equals(sessionedUser.getId())){
+		if(!user.matchPassword(password)) {
+			log.info("Login Fail");
+			return "redirect:/users/loginForm";
+		}
+		log.info("Login Success");
+		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
+		
+		return "redirect:/";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
+		return "redirect:/";
+	}
+
+	@GetMapping("/{id}/form")
+	public String updateForm(@PathVariable Long id, Model model, HttpSession session){
+		if(!HttpSessionUtils.isLoginUser(session)) {
+			return "redirect:/users/loginForm";
+		}
+		User sessionedUser = HttpSessionUtils.getUserFromSession(session);
+		if(!sessionedUser.matchId(id)){
 			throw new IllegalStateException("You can't update other user's profile!!!");
 		}
 		model.addAttribute("user", userRepository.findOne(id));
@@ -90,12 +89,11 @@ public class UserController {
 	
 	@PutMapping("/{id}")
 	public String update(@PathVariable Long id, User updatedUser, HttpSession session) {
-		Object tempUser = session.getAttribute("sessionedUser");
-		if(tempUser == null) {
+		if(!HttpSessionUtils.isLoginUser(session)) {
 			return "redirect:/users/loginForm";
 		}
-		User sessionedUser = (User)tempUser;
-		if(!id.equals(sessionedUser.getId())){
+		User sessionedUser = HttpSessionUtils.getUserFromSession(session);
+		if(!sessionedUser.matchId(id)){
 			throw new IllegalStateException("You can't update other user's profile!!!");
 		}
 		
