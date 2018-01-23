@@ -11,23 +11,27 @@ public class Question {
 	@GeneratedValue
 	Long questionId;
 	
-	@Column(nullable=false, length=20)
-	String writer;
+	private String writer;
+
 	String title;
 	String contents;
-	
-	public void setWriter(String writer) {
-		this.writer = writer;
+	public Question() {
+		
 	}
+	public Question(String writer, String title, String contents) {
+		super();
+		this.writer = writer;
+		this.title = title;
+		this.contents = contents;
+	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
-	public String getWriter() {
-		return writer;
-	}
+
 	public String getTitle() {
 		return title;
 	}
