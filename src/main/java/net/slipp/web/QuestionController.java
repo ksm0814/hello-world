@@ -25,11 +25,10 @@ public class QuestionController {
 		return "question_form";
 	}
 	
-	@PostMapping("/show")
+	@PostMapping("/question")
 	public String question(Question question, Model model) {
 		questions.add(question);
-		model.addAttribute("question", questions);
-		return "show";
+		return "redirect:/show";
 	}
 	
 	@GetMapping("/show")

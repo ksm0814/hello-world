@@ -3,6 +3,8 @@ package net.slipp.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,27 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		return "/user/login";
+	}
+	
+	@PostMapping("/login")
+	public String login(String userId, String password, HttpSession session) {
+		User user = userRepository.findByUserId(userId);
+		if(user == null) {
+			log.info("Login Success");
+			return "redirect:/users/loginForm";
+		}
+		if(!password.equals(user.getPassword())) {
+			log.info("Login Success");
+			return "redirect:/users/loginForm";
+		}
+		log.info("Login Success");
+		session.setAttribute("user", user);
+		
+		return "redirect:/";
+	}
 	
 	@GetMapping("/form")
 	public String form() {
