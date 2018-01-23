@@ -19,12 +19,6 @@ import net.slipp.domain.User;
 public class QuestionController {
 	@Autowired
 	private QuestionRepository questionRepository;
-	
-	@GetMapping("/index")
-	public String welcomePage(Model model) {
-		model.addAttribute("question", questionRepository.findAll());
-		return "index";
-	}
 
 	@GetMapping("/form")
 	public String question(HttpSession session) {
@@ -46,9 +40,9 @@ public class QuestionController {
 		return "redirect:/";
 	}
 	
-//	@GetMapping("/show")
-//	public String show(Model model) {
-//		model.addAttribute("question", questionRepository.findAll());
-//		return "show";
-//	}
+	@GetMapping("/show")
+	public String show(Model model) {
+		model.addAttribute("question", questionRepository.findAll());
+		return "/qna/show";
+	}
 }
