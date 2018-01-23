@@ -50,6 +50,12 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("user");
+		return "redirect:/";
+	}
+	
 	@GetMapping("/form")
 	public String form() {
 		return "/user/form";
@@ -60,6 +66,7 @@ public class UserController {
 		userRepository.save(user);
 		return "redirect:/users";
 	}
+	
 	
 	@GetMapping("")
 	public String list(Model model) {

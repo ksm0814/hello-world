@@ -16,15 +16,14 @@
 						<div class="wrap">
 							<div class="main">
 								{{#question}} 
-								<strong class="subject"> <a
-									href="/show.html">{{title}}</a>
-								</strong>
+								<strong class="subject"> <a href="/show.html"> {{questionId}}. {{title}}</a></strong>
 								<div class="auth-info">
 									<i class="icon-add-comment"></i> <span class="time">2016-01-15 18:47</span> <a href="/profile/{{writer}}" class="author">{{writer}}</a>
 								</div>
 								<div class="reply" title="댓글">
-									<i class="icon-reply"></i> <span class="point">8</span>
+									<i class="icon-reply"></i> <span class="point">목록</span>
 								</div>
+								<br/>
 								{{/question}}
 							</div>
 						</div>
@@ -128,11 +127,6 @@
   </div>
 </div>
 -->
-	<h1>hello world</h1>
-	안녕하세요
-	<!-- script references -->
-	<script src="js/jquery-2.2.0.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/scripts.js"></script>
+	{{>/include/footer}}
 </body>
 </html>

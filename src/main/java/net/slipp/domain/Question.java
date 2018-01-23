@@ -1,6 +1,17 @@
 package net.slipp.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Question {
+	@Id
+	@GeneratedValue
+	Long questionId;
+	
+	@Column(nullable=false, length=20)
 	String writer;
 	String title;
 	String contents;
